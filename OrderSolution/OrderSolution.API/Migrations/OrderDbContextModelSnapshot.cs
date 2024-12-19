@@ -103,11 +103,18 @@ namespace OrderSolution.API.Migrations
 
             modelBuilder.Entity("OrderSolution.API.Data.OrderItem", b =>
                 {
-                    b.HasOne("OrderSolution.API.Data.Order", null)
-                        .WithMany()
+                    b.HasOne("OrderSolution.API.Data.Order", "Order")
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("OrderSolution.API.Data.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

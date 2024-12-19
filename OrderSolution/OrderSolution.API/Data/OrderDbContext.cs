@@ -49,6 +49,12 @@ namespace OrderSolution.API.Data
                 entity.Property(e => e.UpdateAt)
                       .IsRequired()
                       .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                // Order has many OrderItems
+                entity.HasMany(e => e.OrderItems)
+                      .WithOne(e => e.Order)
+                      .HasForeignKey(e => e.OrderId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
             #endregion
 
@@ -73,12 +79,6 @@ namespace OrderSolution.API.Data
                 entity.Property(e => e.UnitPrice)
                       .IsRequired()
                       .HasColumnType("decimal(18,2)");
-
-                // Configure relationship
-                entity.HasOne<Order>()
-                      .WithMany()
-                      .HasForeignKey(e => e.OrderId)
-                      .OnDelete(DeleteBehavior.Cascade);
             });
             #endregion
 

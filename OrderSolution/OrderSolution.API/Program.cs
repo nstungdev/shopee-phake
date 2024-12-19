@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using OrderSolution.API.Data;
+using OrderSolution.API.Services;
 using OrderSolution.API.Settings;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,6 +24,10 @@ builder.Services.AddDbContext<OrderDbContext>(x =>
         opt.CommandTimeout(configuration.GetValue<int?>("Database:CommandTimeout") ?? 30);
     });
 }, ServiceLifetime.Scoped);
+
+#region Services
+builder.Services.AddScoped<IOrderService, OrderService>();
+#endregion
 
 var app = builder.Build();
 

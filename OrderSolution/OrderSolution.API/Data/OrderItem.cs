@@ -7,5 +7,6 @@
         public required string ProductId { get; set; }
         public int Quanity { get; set; }
         public decimal UnitPrice { get; set; }
+        public Order Order { get; set; } = null!;
     }
 }

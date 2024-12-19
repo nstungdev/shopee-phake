@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace OrderSolution.API.Migrations
 {
     /// <inheritdoc />
-    public partial class init_order_table : Migration
+    public partial class CreateOrderTablesMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
