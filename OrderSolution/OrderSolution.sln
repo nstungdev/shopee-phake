@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderSolution.API", "OrderSolution.API\OrderSolution.API.csproj", "{6073444E-1572-42DE-9D7A-16DDE17C88C0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSolution.Contracts", "..\SharedSolution\SharedSolution.Contracts\SharedSolution.Contracts.csproj", "{2371C573-9713-4C8E-B06B-3174B6CF605C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6073444E-1572-42DE-9D7A-16DDE17C88C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6073444E-1572-42DE-9D7A-16DDE17C88C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6073444E-1572-42DE-9D7A-16DDE17C88C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2371C573-9713-4C8E-B06B-3174B6CF605C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2371C573-9713-4C8E-B06B-3174B6CF605C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2371C573-9713-4C8E-B06B-3174B6CF605C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2371C573-9713-4C8E-B06B-3174B6CF605C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
