@@ -73,7 +73,7 @@ namespace OrderSolution.API.Data
                       .IsRequired()
                       .HasMaxLength(150);
 
-                entity.Property(e => e.Quanity)
+                entity.Property(e => e.Quantity)
                       .IsRequired();
 
                 entity.Property(e => e.UnitPrice)

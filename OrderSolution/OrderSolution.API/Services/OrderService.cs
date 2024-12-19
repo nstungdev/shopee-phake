@@ -8,7 +8,7 @@ namespace OrderSolution.API.Services
     public interface IOrderService
     {
         Task CreateOrderAsync(CreateOrderRequest request);
-        Task<Order?> GetOrderAsync(string id);
+        Task<OrderResponse?> GetOrderAsync(string id);
     }
     public class OrderService(OrderDbContext dbContext) : IOrderService
     {
@@ -33,7 +33,7 @@ namespace OrderSolution.API.Services
                 {
                     OrderId = order.Id,
                     ProductId = i.ProductId,
-                    Quanity = i.Quantity,
+                    Quantity = i.Quantity,
                     UnitPrice = i.UnitPrice
                 });
                 await dbContext.OrderItems.AddRangeAsync(items);
@@ -42,9 +42,35 @@ namespace OrderSolution.API.Services
             });
         }
 
-        public async Task<Order?> GetOrderAsync(string id)
+        public async Task<OrderResponse?> GetOrderAsync(string id)
         {
-            return await dbContext.Orders.Include(e => e.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+            var order = await dbContext.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+                return null;
+
+            return new OrderResponse
+            {
+                OrderId = order.Id,
+                CustomerId = order.CustomerId,
+                OrderStatus = order.OrderStatus.ToString(),
+                OrderDate = order.OrderDate,
+                ShippingAddress = order.ShippingAddress,
+                PaymentMethod = order.PaymentMethod.ToString(),
+                CreateAt = order.CreateAt,
+                UpdateAt = order.UpdateAt,
+                OrderTotalPrice = order.OrderItems.Sum(i => i.Quantity * i.UnitPrice),
+                OrderTotalAmount = order.OrderItems.Sum(i => i.Quantity),
+                Items = order.OrderItems.Select(i => new OrderItemResponse
+                {
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice,
+                    TotalPrice = i.Quantity * i.UnitPrice
+                })
+            };
         }
     }
 }
