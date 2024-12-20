@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using OrderSolution.API.Data;
 using OrderSolution.API.DTOs;
 using OrderSolution.API.Enums;
+using SharedSolution.Contracts.Orders;
 
 namespace OrderSolution.API.Services
 {
@@ -10,7 +12,7 @@ namespace OrderSolution.API.Services
         Task CreateOrderAsync(CreateOrderRequest request);
         Task<OrderResponse?> GetOrderAsync(string id);
     }
-    public class OrderService(OrderDbContext dbContext) : IOrderService
+    public class OrderService(OrderDbContext dbContext, IPublishEndpoint publishEndpoint) : IOrderService
     {
         public async Task CreateOrderAsync(CreateOrderRequest request)
         {
@@ -37,6 +39,17 @@ namespace OrderSolution.API.Services
                     UnitPrice = i.UnitPrice
                 });
                 await dbContext.OrderItems.AddRangeAsync(items);
+
+                await publishEndpoint.Publish(new OrderCreated
+                {
+                    CustomerId = order.CustomerId,
+                    OrderId = order.Id,
+                    Details = items.Select(i => new OrderDetail
+                    {
+                        ProductId = i.ProductId,
+                        Quantity = i.Quantity
+                    })
+                });
                 await dbContext.SaveChangesAsync();
                 await trans.CommitAsync();
             });

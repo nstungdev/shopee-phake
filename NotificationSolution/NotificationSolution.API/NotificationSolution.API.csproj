@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\SharedSolution\SharedSolution.Contracts\SharedSolution.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

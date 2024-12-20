@@ -1,23 +1,18 @@
-using Microsoft.EntityFrameworkCore;
-using OrderSolution.API.Data;
-using OrderSolution.API.Services;
-using OrderSolution.API.Settings;
-using System.Text.Json.Serialization;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using NotificationSolution.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 // Add services to the container.
 
-builder.Services.AddControllers()
-    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<DatabaseSettings>(configuration.GetSection("Database"));
-
-builder.Services.AddDbContext<OrderDbContext>(x =>
+builder.Services.AddDbContext<NotificationDbContext>(x =>
 {
     x.UseNpgsql(builder.Configuration["Database:ConnectionString"]!, opt =>
     {
@@ -26,6 +21,7 @@ builder.Services.AddDbContext<OrderDbContext>(x =>
     });
 }, ServiceLifetime.Scoped);
 
+#region MassTransit
 builder.Services.AddOptions<RabbitMqTransportOptions>().Configure(options => {
     var portNr = configuration.GetValue<ushort>("RabbitMQ:Port");
     options.Host = configuration["RabbitMQ:Host"];
@@ -34,26 +30,19 @@ builder.Services.AddOptions<RabbitMqTransportOptions>().Configure(options => {
     options.Pass = configuration["RabbitMQ:Password"];
     options.VHost = "/";
 });
-
 builder.Services.AddMassTransit(x =>
 {
-    x.AddEntityFrameworkOutbox<OrderDbContext>(o =>
-    {
-        o.QueryDelay = TimeSpan.FromSeconds(30);
-        o.DuplicateDetectionWindow = TimeSpan.FromMinutes(1);
-        o.UsePostgres();
-        o.UseBusOutbox();
-        o.DisableInboxCleanupService();
-    });
+    x.SetKebabCaseEndpointNameFormatter();
 
+    var assembly = typeof(Program).Assembly;
+    x.AddConsumers(assembly);
+    x.AddActivities(assembly);
+    
     x.UsingRabbitMq((ctx, cfg) =>
     {
         cfg.ConfigureEndpoints(ctx);
     });
 });
-
-#region Services
-builder.Services.AddScoped<IOrderService, OrderService>();
 #endregion
 
 var app = builder.Build();
@@ -64,6 +53,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using OrderSolution.API.Enums;
 
 namespace OrderSolution.API.Data
@@ -85,6 +86,12 @@ namespace OrderSolution.API.Data
             #region Enums
             modelBuilder.HasPostgresEnum<OrderStatus>();
             modelBuilder.HasPostgresEnum<PaymentMethod>();
+            #endregion
+
+            #region Outbox
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
             #endregion
         }
     }

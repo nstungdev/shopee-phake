@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationSolution.API", "NotificationSolution.API\NotificationSolution.API.csproj", "{F092D8C0-C095-4523-9EF7-47361ABACA23}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSolution.Contracts", "..\SharedSolution\SharedSolution.Contracts\SharedSolution.Contracts.csproj", "{C13F714F-1284-4351-AFB3-2A013CCA2756}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F092D8C0-C095-4523-9EF7-47361ABACA23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F092D8C0-C095-4523-9EF7-47361ABACA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F092D8C0-C095-4523-9EF7-47361ABACA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F092D8C0-C095-4523-9EF7-47361ABACA23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C13F714F-1284-4351-AFB3-2A013CCA2756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13F714F-1284-4351-AFB3-2A013CCA2756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13F714F-1284-4351-AFB3-2A013CCA2756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13F714F-1284-4351-AFB3-2A013CCA2756}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {197EE246-AD30-478B-8FAF-C0445EC8BF5A}
+	EndGlobalSection
+EndGlobal
